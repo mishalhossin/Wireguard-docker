@@ -3,8 +3,8 @@
 # Update package lists and upgrade packages
 sudo apt-get update && sudo apt-get upgrade -y
 
-# Install WireGuard
-sudo apt-get install -y wireguard
+# Install WireGuard and curl
+sudo apt-get install -y wireguard curl
 
 # Generate private and public keys for the server
 umask 077
@@ -12,6 +12,9 @@ wg genkey | tee /etc/wireguard/privatekey | wg pubkey > /etc/wireguard/publickey
 
 # Generate private and public keys for the client
 wg genkey | tee client_privatekey | wg pubkey > client_publickey
+
+# Get the public IP address of the server
+SERVER_PUBLIC_IP=$(curl -s ifconfig.me)
 
 # Create the WireGuard configuration file for the server
 cat << EOF > /etc/wireguard/wg0.conf
@@ -33,7 +36,7 @@ PrivateKey = $(cat client_privatekey)
 
 [Peer]
 PublicKey = $(cat /etc/wireguard/publickey)
-Endpoint = SERVER_PUBLIC_IP:51820
+Endpoint = $SERVER_PUBLIC_IP:51820
 AllowedIPs = 0.0.0.0/0, ::/0 
 EOF
 
