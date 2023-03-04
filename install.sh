@@ -4,3 +4,7 @@ wget https://api.papermc.io/v2/projects/paper/versions/1.19.3/builds/431/downloa
 wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
 # Unzip ngrok file
 unzip ngrok-stable-linux-amd64.zip
+# Run PaperMC server
+java -jar paper-1.19.3.jar
+# Run ngrok and expose port 25565
+ngrok tcp 25565
